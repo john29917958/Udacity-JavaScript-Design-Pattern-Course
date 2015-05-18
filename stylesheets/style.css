@@ -39,6 +39,14 @@ html, body {
 	left: 0;
 }
 
+.cat-clicker > .cat-clicker-photo > img {
+	border-style: solid;
+	border-width: 1px;
+	border-color: white;
+	border-radius: 5px;
+	padding: 2px;
+}
+
 .cat-clicker > .cat-clicker-photo > img:hover {
 	cursor: pointer;
 }

@@ -28,7 +28,7 @@ module.exports = (function () {
 	CatUI.prototype.refresh = function() {
 		this.catName.innerHTML = this.cat.getName();
 		this.catPhotoImg.src = this.cat.getPhotoPath();
-		this.countNumber.innerHTML = this.cat.getClickCount();
+		this.countNumber.textContent = this.cat.getClickCount();
 	};
 
 	return CatUI;
