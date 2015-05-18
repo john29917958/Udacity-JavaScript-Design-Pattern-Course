@@ -3,8 +3,9 @@ My Udacity JavaScript Design Pattern course practice.
 
 ## Dependencies
 - npm
+- webpack
 
-## Usage
+## Installation
 1. Install [npm](https://github.com/npm/npm).
 2. Go to the root directory.
 3. Commands `$ npm install`.
