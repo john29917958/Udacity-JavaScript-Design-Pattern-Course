@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = (function () {
 	function eventInit() {
 		var that = this;

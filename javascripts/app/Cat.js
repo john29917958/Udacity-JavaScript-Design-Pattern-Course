@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = (function () {
 	function validateString(str) {
 		if (typeof str === 'string' && str.length > 0) {
