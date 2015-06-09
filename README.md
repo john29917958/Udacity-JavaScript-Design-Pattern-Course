@@ -9,5 +9,6 @@ My Udacity JavaScript Design Pattern course practice.
 1. Install [npm](https://github.com/npm/npm).
 2. Go to the root directory.
 3. Commands `$ npm install`.
-4. Commands `$ webpack`.
-5. All done.
+4. Commands `$ npm install -g webpack`.
+5. Commands `$ webpack`.
+6. All done.
