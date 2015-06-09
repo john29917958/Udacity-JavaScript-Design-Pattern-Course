@@ -1,4 +1,5 @@
-var Cat = require('./Cat.js'),
+var lib = require('./library.js'),
+	Cat = require('./Cat.js'),
 	CatUI = require('./CatUI.js'),
 	cats = document.getElementsByClassName('cat-clicker');
 
@@ -16,4 +17,15 @@ function initCats(cats) {
 	}
 }
 
-initCats(cats);
+lib.init();
+//initCats(cats);
+
+var nums = [1, 2, 3],
+	currentCat;
+
+for (var i = 0; i < nums.length; i++) {
+	var num = nums[i];
+	
+	currentCat = cats[i];
+
+}
