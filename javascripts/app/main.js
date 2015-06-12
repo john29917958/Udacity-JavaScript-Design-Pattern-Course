@@ -1,7 +1,11 @@
-var CollectionHelper = require('./CollectionHelper.js'),
+var jsSelector = require('./jsSelector.js'),
 	Cat = require('./Cat.js'),
 	CatUI = require('./CatUI.js'),
-	cats = new CollectionHelper(document.getElementsByClassName('cat-clicker'));
+	catLists = jsSelector(document.getElementsByClassName('cat-list')).findByClassName('list'),
+	catClicker = jsSelector(document.getElementsByClassName('cat-clicker')),
+	name = catClicker.findByClassName('cat-clicker-name')[0],
+	photo = catClicker.findByClassName('cat-clicker-photo')[0],
+	count = catClicker.findByClassName('cat-clicker-count')[0];
 
 function initCats(cats) {
 	var currentCat,
@@ -19,18 +23,33 @@ function initCats(cats) {
 
 //initCats(cats);
 
-var nums = [1, 2, 3],
-	currentCat;
+// init
+for (var i = 1; i <= catLists.length; i++) {
+	(function() {
+		var currentCatName = 'Catty number ' + i,
+			currentCatPhotoPath = 'images/cat_number_' + convertNumToString(i) + '.jpg',
+			currentPhoto = document.createElement('IMG'),
+			currentCatCount = 0;
 
-for (var i = 0; i < cats.length; i++) {
-	var num = nums[i];
-	
-	currentCat = new CollectionHelper(cats[i]);
-	currentCat.findByClassName('cat-clicker-count')[0].textContent = num;
-	/* Immediately-involked Function Expression. */
-	currentCat.findByClassName('cat-clicker-photo').findByTagName('img')[0].addEventListener('click', (function (numCopy) {
-		return function () {
-			alert(numCopy);
-		};
-	})(num));
+		catLists[i - 1].textContent = currentCatName;
+		currentPhoto.src = currentCatPhotoPath;
+
+		catLists[i - 1].addEventListener('click', function() {
+			name.textContent = currentCatName;
+			photo.innerHTML = '';
+			photo.appendChild(currentPhoto);
+			count.textContent = currentCatCount;
+		});
+
+		currentPhoto.addEventListener('click', function() {
+			currentCatCount += 1;
+			count.textContent = currentCatCount;
+		});
+	})();
+}
+
+function convertNumToString(num) {
+	var map = ['zero', 'one', 'two', 'three', 'four', 'five'];
+
+	return map[num];
 }
