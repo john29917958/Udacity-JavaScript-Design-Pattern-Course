@@ -1,6 +1,4 @@
 var jsSelector = require('./jsSelector.js'),
-	Cat = require('./Cat.js'),
-	CatUI = require('./CatUI.js'),
 	catLists = jsSelector(document.getElementsByClassName('cat-list')).findByClassName('list'),
 	catClicker = jsSelector(document.getElementsByClassName('cat-clicker')),
 	name = catClicker.findByClassName('cat-clicker-name')[0],
@@ -21,9 +19,6 @@ function initCats(cats) {
 	}
 }
 
-//initCats(cats);
-
-// init
 for (var i = 1; i <= catLists.length; i++) {
 	(function() {
 		var currentCatName = 'Catty number ' + i,
