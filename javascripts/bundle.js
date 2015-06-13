@@ -1,42 +1,41 @@
 /******/ (function(modules) { // webpackBootstrap
-/******/ 	
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-/******/ 	
+
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
+
 /******/ 		// Check if module is in cache
 /******/ 		if(installedModules[moduleId])
 /******/ 			return installedModules[moduleId].exports;
-/******/ 		
+
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			exports: {},
 /******/ 			id: moduleId,
 /******/ 			loaded: false
 /******/ 		};
-/******/ 		
+
 /******/ 		// Execute the module function
 /******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/ 		
+
 /******/ 		// Flag the module as loaded
 /******/ 		module.loaded = true;
-/******/ 		
+
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/ 	
-/******/ 	
+
+
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
-/******/ 	
+
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-/******/ 	
+
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
-/******/ 	
-/******/ 	
+
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
 /******/ })
@@ -45,9 +44,7 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var jsSelector = __webpack_require__(4),
-		Cat = __webpack_require__(2),
-		CatUI = __webpack_require__(3),
+	var jsSelector = __webpack_require__(1),
 		catLists = jsSelector(document.getElementsByClassName('cat-list')).findByClassName('list'),
 		catClicker = jsSelector(document.getElementsByClassName('cat-clicker')),
 		name = catClicker.findByClassName('cat-clicker-name')[0],
@@ -68,9 +65,6 @@
 		}
 	}
 
-	//initCats(cats);
-
-	// init
 	for (var i = 1; i <= catLists.length; i++) {
 		(function() {
 			var currentCatName = 'Catty number ' + i,
@@ -102,118 +96,7 @@
 	}
 
 /***/ },
-/* 1 */,
-/* 2 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	module.exports = (function () {
-		function validateString(str) {
-			if (typeof str === 'string' && str.length > 0) {
-				return true;
-			}
-			else {
-				return false;
-			}
-		}
-
-		function Cat(name, photo) {
-			if (validateString(name) && validateString(photo)) {
-				this.catName = name;
-				this.photoPath = photo;
-				this.clicked = 0;
-			}
-			else {
-				return null;
-			}
-		}
-
-		Cat.prototype.getName = function() {
-			return this.catName;
-		};
-
-		Cat.prototype.setName = function(name) {
-			if (validateString(name)) {
-				this.catName = name;
-
-				return true;
-			}
-			else {
-				return false;
-			}
-		};
-
-		Cat.prototype.getPhotoPath = function() {
-			return this.photoPath;
-		};
-
-		Cat.prototype.setPhotoPath = function(photoPath) {
-			if (validateString(photoPath)) {
-				this.photoPath = photoPath;
-
-				return true;
-			}
-			else {
-				return false;
-			}
-		};
-
-		Cat.prototype.getClickCount = function() {
-			return this.clicked;
-		};
-
-		Cat.prototype.clickMe = function() {
-			this.clicked += 1;
-		};
-
-		return Cat;
-	})();
-
-/***/ },
-/* 3 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	module.exports = (function () {
-		function eventInit() {
-			var that = this;
-
-			this.catPhotoImg.addEventListener('click', function () {
-				that.cat.clickMe();
-				that.refresh();
-			}, false);
-		}
-
-		function CatUI(ui, cat) {
-			if (ui && cat) {
-				this.cat = cat;
-				this.wrapper = ui;
-				this.catName = ui.firstElementChild;
-				this.catPhoto = ui.children[1];
-				this.catPhotoImg = ui.children[1].firstElementChild;
-				this.catClickerCount = ui.children[2];
-				this.countNumber = ui.children[2].firstElementChild;
-
-				eventInit.call(this);
-			}
-			else {
-				return null;
-			}
-		}
-
-		CatUI.prototype.refresh = function() {
-			this.catName.innerHTML = this.cat.getName();
-			this.catPhotoImg.src = this.cat.getPhotoPath();
-			this.countNumber.textContent = this.cat.getClickCount();
-		};
-
-		return CatUI;
-	})();
-
-/***/ },
-/* 4 */
+/* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -480,4 +363,4 @@
 	})();
 
 /***/ }
-/******/ ])
+/******/ ]);
