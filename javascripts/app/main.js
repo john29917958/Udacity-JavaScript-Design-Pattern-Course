@@ -1,50 +1,63 @@
-var jsSelector = require('./jsSelector.js'),
-	catLists = jsSelector(document.getElementsByClassName('cat-list')).findByClassName('list'),
-	catClicker = jsSelector(document.getElementsByClassName('cat-clicker')),
-	name = catClicker.findByClassName('cat-clicker-name')[0],
-	photo = catClicker.findByClassName('cat-clicker-photo')[0],
-	count = catClicker.findByClassName('cat-clicker-count')[0];
+$(function(){
 
-function initCats(cats) {
-	var currentCat,
-		currentCatName,
-		currentCatPhotoPath;
+    var model = {
+        init: function() {
+            if (!localStorage.notes) {
+                localStorage.notes = JSON.stringify([]);
+            }
+        },
+        add: function(obj) {
+            var data = JSON.parse(localStorage.notes);
+            data.push(obj);
+            localStorage.notes = JSON.stringify(data);
+        },
+        getAllNotes: function() {
+            return JSON.parse(localStorage.notes);
+        }
+    };
 
-	for (var i = 0; i < cats.length; i++) {
-		currentCat = cats[i];
-		currentCatName = currentCat.firstElementChild.innerText;
-		currentCatPhotoPath = currentCat.children[1].firstElementChild.src;
 
-		new CatUI(currentCat, new Cat(currentCatName, currentCatPhotoPath));
-	}
-}
+    var octopus = {
+        addNewNote: function(noteStr) {
+            model.add({
+                content: noteStr
+            });
+            view.render();
+        },
 
-for (var i = 1; i <= catLists.length; i++) {
-	(function() {
-		var currentCatName = 'Catty number ' + i,
-			currentCatPhotoPath = 'images/cat_number_' + convertNumToString(i) + '.jpg',
-			currentPhoto = document.createElement('IMG'),
-			currentCatCount = 0;
+        getNotes: function() {
+            return model.getAllNotes();
+        },
 
-		catLists[i - 1].textContent = currentCatName;
-		currentPhoto.src = currentCatPhotoPath;
+        init: function() {
+            model.init();
+            view.init();
+        }
+    };
 
-		catLists[i - 1].addEventListener('click', function() {
-			name.textContent = currentCatName;
-			photo.innerHTML = '';
-			photo.appendChild(currentPhoto);
-			count.textContent = currentCatCount;
-		});
 
-		currentPhoto.addEventListener('click', function() {
-			currentCatCount += 1;
-			count.textContent = currentCatCount;
-		});
-	})();
-}
+    var view = {
+        init: function() {
+            this.noteList = $('#notes');
+            var newNoteForm = $('#new-note-form');
+            var newNoteContent = $('#new-note-content');
+            newNoteForm.submit(function(e){
+                octopus.addNewNote(newNoteContent.val());
+                newNoteContent.val('');
+                e.preventDefault();
+            });
+            view.render();
+        },
+        render: function(){
+            var htmlStr = '';
+            octopus.getNotes().forEach(function(note){
+                htmlStr += '<li class="note">'+
+                        note.content +
+                    '</li>';
+            });
+            this.noteList.html( htmlStr );
+        }
+    };
 
-function convertNumToString(num) {
-	var map = ['zero', 'one', 'two', 'three', 'four', 'five'];
-
-	return map[num];
-}
+    octopus.init();
+});
