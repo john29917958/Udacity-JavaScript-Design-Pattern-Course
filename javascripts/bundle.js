@@ -44,59 +44,175 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var jsSelector = __webpack_require__(1),
-		catLists = jsSelector(document.getElementsByClassName('cat-list')).findByClassName('list'),
-		catClicker = jsSelector(document.getElementsByClassName('cat-clicker')),
-		name = catClicker.findByClassName('cat-clicker-name')[0],
-		photo = catClicker.findByClassName('cat-clicker-photo')[0],
-		count = catClicker.findByClassName('cat-clicker-count')[0];
+	'use strict';
 
-	function initCats(cats) {
-		var currentCat,
-			currentCatName,
-			currentCatPhotoPath;
+	var octopus = __webpack_require__(2);
 
-		for (var i = 0; i < cats.length; i++) {
-			currentCat = cats[i];
-			currentCatName = currentCat.firstElementChild.innerText;
-			currentCatPhotoPath = currentCat.children[1].firstElementChild.src;
+	octopus.init();
 
-			new CatUI(currentCat, new Cat(currentCatName, currentCatPhotoPath));
-		}
+	for (var i = 1; i <= 5; i++) {
+	    octopus.addCat('Catty number ' + i, 'images/' + 'cat_number_' + convertNumber(i) + '.jpg');
 	}
 
-	for (var i = 1; i <= catLists.length; i++) {
-		(function() {
-			var currentCatName = 'Catty number ' + i,
-				currentCatPhotoPath = 'images/cat_number_' + convertNumToString(i) + '.jpg',
-				currentPhoto = document.createElement('IMG'),
-				currentCatCount = 0;
+	function convertNumber(number) {
+	    var map = ['zero', 'one', 'two', 'three', 'four', 'five'];
 
-			catLists[i - 1].textContent = currentCatName;
-			currentPhoto.src = currentCatPhotoPath;
-
-			catLists[i - 1].addEventListener('click', function() {
-				name.textContent = currentCatName;
-				photo.innerHTML = '';
-				photo.appendChild(currentPhoto);
-				count.textContent = currentCatCount;
-			});
-
-			currentPhoto.addEventListener('click', function() {
-				currentCatCount += 1;
-				count.textContent = currentCatCount;
-			});
-		})();
-	}
-
-	function convertNumToString(num) {
-		var map = ['zero', 'one', 'two', 'three', 'four', 'five'];
-
-		return map[num];
+	    return map[number];
 	}
 
 /***/ },
-/* 1 */
+/* 1 */,
+/* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	module.exports = (function () {
+	    var catListView = __webpack_require__(6),
+	        catClickerView = __webpack_require__(3),
+	        model = __webpack_require__(5);
+
+	    var octopus = {
+	        init: function() {
+	            model.init();
+	            catListView.init(this);
+	            catClickerView.init(this);
+	        },
+
+	        addCat: function(name, photoPath) {
+	            model.cats.push({
+	                name: name,
+	                photoPath: photoPath,
+	                clicks: 0
+	            });
+
+	            catListView.render();
+	        },
+
+	        getCurrentCat: function() {
+	            return model.currentCat;
+	        },
+
+	        getAllCats: function() {
+	            return model.getAllCats();
+	        },
+
+	        setCurrentCat: function(name) {
+	            var switched = false;
+
+	            model.getAllCats().forEach(function (currentCat) {
+	                if (!switched && currentCat.name === name) {
+	                    model.currentCat = currentCat;
+	                }
+	            });
+
+	            catClickerView.render();
+	        },
+
+	        increamentClick: function() {
+	            model.currentCat.clicks += 1;
+	            catClickerView.render();
+	        }
+	    };
+
+	    return octopus;
+	})();
+
+/***/ },
+/* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	module.exports = (function () {
+	    var jsSelector = __webpack_require__(7);
+
+	    var catClicker = {
+	        init: function(octopus) {
+	            var that = this,
+	                catClicker = jsSelector(document.getElementsByClassName('cat-clicker'));
+
+	            this.octopus = octopus;
+	            this.catNameField = catClicker.findByClassName('cat-clicker-name')[0];
+	            this.catImg = catClicker.findByClassName('cat-clicker-photo').findByTagName('img')[0];
+	            this.clicksCountField = catClicker.findByClassName('cat-clicker-count')[0];
+
+	            this.catImg.addEventListener('click', function () {
+	                that.octopus.increamentClick();
+	            });
+	        },
+
+	        render: function() {
+	            var currentCat = this.octopus.getCurrentCat();
+
+	            this.catNameField.innerHTML = currentCat.name;
+	            this.catImg.src = currentCat.photoPath;
+	            this.clicksCountField.innerHTML = currentCat.clicks;
+	        }
+	    };
+
+	    return catClicker;
+	})();
+
+/***/ },
+/* 4 */,
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	module.exports = (function () {
+	    var catStorage = {
+	        init: function() {
+	            this.cats = [];
+	            this.currentCat = {};
+	        },
+
+	        getAllCats: function() {
+	            return this.cats;
+	        }
+	    };
+
+	    return catStorage;
+	})();
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	module.exports = (function () {
+	    var catList = {
+	        init: function(octopus) {
+	            this.octopus = octopus;
+	            this.listDOM = document.getElementsByClassName('cat-list')[0];
+	        },
+
+	        render: function() {
+	            var that = this;
+
+	            this.listDOM.innerHTML = '';
+
+	            this.octopus.getAllCats().forEach(function (currentCat) {
+	                var newList = document.createElement('LI');
+
+	                newList.className += 'list';
+	                newList.textContent = '- ' + currentCat.name;
+	                newList.addEventListener('click', function() {
+	                    that.octopus.setCurrentCat(currentCat.name);
+	                });
+
+	                that.listDOM.appendChild(newList);
+	            });
+	        }
+	    };
+
+	    return catList;
+	})();
+
+/***/ },
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

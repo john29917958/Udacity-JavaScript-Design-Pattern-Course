@@ -42,9 +42,14 @@ html, body {
 .cat-clicker > .cat-clicker-photo > img {
 	border-style: solid;
 	border-width: 1px;
-	border-color: white;
+	border-color: rgba(255, 255, 255, 0.5);
 	border-radius: 5px;
 	padding: 2px;
+	transition: all 0.2s ease-in-out;
+}
+
+.cat-clicker > .cat-clicker-photo > img:hover {
+	box-shadow: 0 3px 20px rgba(255, 255, 255, 0.5);
 }
 
 .cat-clicker > .cat-clicker-photo > img:hover {
@@ -54,14 +59,19 @@ html, body {
 .cat-list {
 	padding: 0;
 	list-style-type: none;
+	font-size: 0;
+}
+
+.cat-list > .list {
+	padding: 5px;
+	font-size: 12pt;
 }
 
 .cat-list > .list:hover {
 	cursor: pointer;
-	padding: 5px;
 	border-radius: 5px;
 	background-color: rgba(255, 255, 255, 0.2);
-	transition: background-color 0.2s ease-in-out;
+	transition: all 0.2s ease-in-out;
 }
 
 .text-center {
