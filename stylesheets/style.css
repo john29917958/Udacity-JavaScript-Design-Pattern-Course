@@ -39,6 +39,41 @@ html, body {
 	left: 0;
 }
 
+.btn {
+	padding: 5px;
+	padding-left: 8px;
+	padding-right: 8px;
+	border-style: solid;
+	border-color: white;
+	border-width: 1px;
+	border-radius: 5px;
+	color: white;
+	background-color: transparent;
+	font-size: 13pt;
+	cursor: pointer;
+	transition: color 0.2s ease-in-out,
+		background-color 0.2s ease-in-out;
+}
+
+.btn:active {
+	box-shadow: 0 1px 25px rgba(255, 255, 255, 0.5);
+}
+
+.btn:hover {
+	color: black;
+	background-color: white;
+}
+
+.cat-clicker-admin > .btn-admin,
+.cat-clicker-admin > .admin-functionality-box {
+	display: inline-block;
+	vertical-align: top;
+}
+
+.cat-clicker-admin > .admin-functionality-box {
+	margin-left: 20px;
+}
+
 .cat-clicker > .cat-clicker-photo > img {
 	border-style: solid;
 	border-width: 1px;
@@ -72,6 +107,32 @@ html, body {
 	border-radius: 5px;
 	background-color: rgba(255, 255, 255, 0.2);
 	transition: all 0.2s ease-in-out;
+}
+
+.form-control,
+.form-control:focus {
+	outline: none;
+	border-style: solid;
+	border-radius: 5px;
+	border-width: 1px;
+	padding: 5px;
+}
+
+.form-control:focus {
+	border-color: #0099FF;
+	box-shadow: 0 1px 25px #0099FF;
+	transition: box-shadow 0.2s ease-in-out,
+		border 0.2s ease-in-out;
+}
+
+.table caption {
+	font-weight: bold;
+	font-size: 18pt;
+	text-align: left;
+}
+
+.table th, .table td {
+	text-align: left;
 }
 
 .text-center {
