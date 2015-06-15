@@ -5,6 +5,8 @@ module.exports = (function () {
         init: function(octopus) {
             this.octopus = octopus;
             this.listDOM = document.getElementsByClassName('cat-list')[0];
+
+            return this;
         },
 
         render: function() {

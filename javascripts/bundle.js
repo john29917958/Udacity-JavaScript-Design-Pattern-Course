@@ -1,41 +1,42 @@
 /******/ (function(modules) { // webpackBootstrap
+/******/ 	
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-
+/******/ 	
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
-
 /******/ 		// Check if module is in cache
 /******/ 		if(installedModules[moduleId])
 /******/ 			return installedModules[moduleId].exports;
-
+/******/ 		
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			exports: {},
 /******/ 			id: moduleId,
 /******/ 			loaded: false
 /******/ 		};
-
+/******/ 		
 /******/ 		// Execute the module function
 /******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-
+/******/ 		
 /******/ 		// Flag the module as loaded
 /******/ 		module.loaded = true;
-
+/******/ 		
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-
-
+/******/ 	
+/******/ 	
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
-
+/******/ 	
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-
+/******/ 	
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
-
+/******/ 	
+/******/ 	
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
 /******/ })
@@ -46,13 +47,15 @@
 
 	'use strict';
 
-	var octopus = __webpack_require__(2);
+	var octopus = __webpack_require__(1);
 
 	octopus.init();
 
-	for (var i = 1; i <= 5; i++) {
-	    octopus.addCat('Catty number ' + i, 'images/' + 'cat_number_' + convertNumber(i) + '.jpg');
-	}
+/***/ },
+/* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
 
 	function convertNumber(number) {
 	    var map = ['zero', 'one', 'two', 'three', 'four', 'five'];
@@ -60,32 +63,34 @@
 	    return map[number];
 	}
 
-/***/ },
-/* 1 */,
-/* 2 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
 	module.exports = (function () {
-	    var catListView = __webpack_require__(6),
+	    var catListView = __webpack_require__(2),
 	        catClickerView = __webpack_require__(3),
-	        model = __webpack_require__(5);
+	        model = __webpack_require__(4);
+
+	    function addCat(name, photoPath) {
+	        model.cats.push({
+	            name: name,
+	            photoPath: photoPath,
+	            clicks: 0
+	        });
+	    }
 
 	    var octopus = {
 	        init: function() {
 	            model.init();
-	            catListView.init(this);
-	            catClickerView.init(this);
+
+	            for (var i = 1; i <= 5; i++) {
+	                addCat('Catty number ' + i, 'images/' + 'cat_number_' + convertNumber(i) + '.jpg');
+	            }
+	            model.currentCat = model.cats[0];
+	            
+	            catListView.init(this).render();;
+	            catClickerView.init(this).render();;
 	        },
 
 	        addCat: function(name, photoPath) {
-	            model.cats.push({
-	                name: name,
-	                photoPath: photoPath,
-	                clicks: 0
-	            });
-
+	            addCat(name, photoPath);
 	            catListView.render();
 	        },
 
@@ -119,65 +124,7 @@
 	})();
 
 /***/ },
-/* 3 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	module.exports = (function () {
-	    var jsSelector = __webpack_require__(7);
-
-	    var catClicker = {
-	        init: function(octopus) {
-	            var that = this,
-	                catClicker = jsSelector(document.getElementsByClassName('cat-clicker'));
-
-	            this.octopus = octopus;
-	            this.catNameField = catClicker.findByClassName('cat-clicker-name')[0];
-	            this.catImg = catClicker.findByClassName('cat-clicker-photo').findByTagName('img')[0];
-	            this.clicksCountField = catClicker.findByClassName('cat-clicker-count')[0];
-
-	            this.catImg.addEventListener('click', function () {
-	                that.octopus.increamentClick();
-	            });
-	        },
-
-	        render: function() {
-	            var currentCat = this.octopus.getCurrentCat();
-
-	            this.catNameField.innerHTML = currentCat.name;
-	            this.catImg.src = currentCat.photoPath;
-	            this.clicksCountField.innerHTML = currentCat.clicks;
-	        }
-	    };
-
-	    return catClicker;
-	})();
-
-/***/ },
-/* 4 */,
-/* 5 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	module.exports = (function () {
-	    var catStorage = {
-	        init: function() {
-	            this.cats = [];
-	            this.currentCat = {};
-	        },
-
-	        getAllCats: function() {
-	            return this.cats;
-	        }
-	    };
-
-	    return catStorage;
-	})();
-
-/***/ },
-/* 6 */
+/* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -187,6 +134,8 @@
 	        init: function(octopus) {
 	            this.octopus = octopus;
 	            this.listDOM = document.getElementsByClassName('cat-list')[0];
+
+	            return this;
 	        },
 
 	        render: function() {
@@ -212,7 +161,66 @@
 	})();
 
 /***/ },
-/* 7 */
+/* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	module.exports = (function () {
+	    var jsSelector = __webpack_require__(5);
+
+	    var catClicker = {
+	        init: function(octopus) {
+	            var that = this,
+	                catClicker = jsSelector(document.getElementsByClassName('cat-clicker'));
+
+	            this.octopus = octopus;
+	            this.catNameField = catClicker.findByClassName('cat-clicker-name')[0];
+	            this.catImg = catClicker.findByClassName('cat-clicker-photo').findByTagName('img')[0];
+	            this.clicksCountField = catClicker.findByClassName('cat-clicker-count')[0];
+
+	            this.catImg.addEventListener('click', function () {
+	                that.octopus.increamentClick();
+	            });
+
+	            return this;
+	        },
+
+	        render: function() {
+	            var currentCat = this.octopus.getCurrentCat();
+
+	            this.catNameField.innerHTML = currentCat.name;
+	            this.catImg.src = currentCat.photoPath;
+	            this.clicksCountField.innerHTML = currentCat.clicks;
+	        }
+	    };
+
+	    return catClicker;
+	})();
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	module.exports = (function () {
+	    var catStorage = {
+	        init: function() {
+	            this.cats = [];
+	            this.currentCat = {};
+	        },
+
+	        getAllCats: function() {
+	            return this.cats;
+	        }
+	    };
+
+	    return catStorage;
+	})();
+
+/***/ },
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -479,4 +487,4 @@
 	})();
 
 /***/ }
-/******/ ]);
+/******/ ])

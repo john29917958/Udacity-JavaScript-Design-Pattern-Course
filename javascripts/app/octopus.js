@@ -1,24 +1,39 @@
 'use strict';
 
+function convertNumber(number) {
+    var map = ['zero', 'one', 'two', 'three', 'four', 'five'];
+
+    return map[number];
+}
+
 module.exports = (function () {
     var catListView = require('./cat_list.js'),
         catClickerView = require('./cat_clicker.js'),
         model = require('./cat_storage.js');
 
+    function addCat(name, photoPath) {
+        model.cats.push({
+            name: name,
+            photoPath: photoPath,
+            clicks: 0
+        });
+    }
+
     var octopus = {
         init: function() {
             model.init();
-            catListView.init(this);
-            catClickerView.init(this);
+
+            for (var i = 1; i <= 5; i++) {
+                addCat('Catty number ' + i, 'images/' + 'cat_number_' + convertNumber(i) + '.jpg');
+            }
+            model.currentCat = model.cats[0];
+            
+            catListView.init(this).render();;
+            catClickerView.init(this).render();;
         },
 
         addCat: function(name, photoPath) {
-            model.cats.push({
-                name: name,
-                photoPath: photoPath,
-                clicks: 0
-            });
-
+            addCat(name, photoPath);
             catListView.render();
         },
 

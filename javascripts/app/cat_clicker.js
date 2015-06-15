@@ -16,6 +16,8 @@ module.exports = (function () {
             this.catImg.addEventListener('click', function () {
                 that.octopus.increamentClick();
             });
+
+            return this;
         },
 
         render: function() {
