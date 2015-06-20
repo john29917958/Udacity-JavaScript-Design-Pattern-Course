@@ -39,6 +39,12 @@ html, body {
 	left: 0;
 }
 
+.admin-functionality-box {
+	display: none;
+}
+
+
+
 .btn {
 	padding: 5px;
 	padding-left: 8px;
@@ -120,9 +126,13 @@ html, body {
 
 .form-control:focus {
 	border-color: #0099FF;
-	box-shadow: 0 1px 25px #0099FF;
+	box-shadow: 0 1px 15px #0099FF;
 	transition: box-shadow 0.2s ease-in-out,
 		border 0.2s ease-in-out;
+}
+
+.pull-right {
+	float: right;
 }
 
 .table caption {
@@ -133,8 +143,19 @@ html, body {
 
 .table th, .table td {
 	text-align: left;
+	padding: 2px;
+	padding-left: 0;
+	padding-right: 6px;
 }
 
-.text-center {
+.text-center,
+.table th.text-center,
+.table td.text-center {
 	text-align: center;
+}
+
+.text-right,
+.table th.text-right,
+.table td.text-right {
+	text-align: right;
 }

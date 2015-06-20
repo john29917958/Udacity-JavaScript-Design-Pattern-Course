@@ -66,6 +66,7 @@
 	module.exports = (function () {
 	    var catListView = __webpack_require__(2),
 	        catClickerView = __webpack_require__(3),
+	        adminView = __webpack_require__(6),
 	        model = __webpack_require__(4);
 
 	    function addCat(name, photoPath) {
@@ -85,8 +86,9 @@
 	            }
 	            model.currentCat = model.cats[0];
 	            
-	            catListView.init(this).render();;
-	            catClickerView.init(this).render();;
+	            catListView.init(this).render();
+	            catClickerView.init(this).render();
+	            adminView.init(this);
 	        },
 
 	        addCat: function(name, photoPath) {
@@ -102,6 +104,11 @@
 	            return model.getAllCats();
 	        },
 
+	        increamentClick: function() {
+	            model.currentCat.clicks += 1;
+	            catClickerView.render();
+	        },
+
 	        setCurrentCat: function(name) {
 	            var switched = false;
 
@@ -114,9 +121,24 @@
 	            catClickerView.render();
 	        },
 
-	        increamentClick: function() {
-	            model.currentCat.clicks += 1;
-	            catClickerView.render();
+	        updateCat: function(contents) {
+	            var catsToBeUpdated = null;
+
+	            if (contents.name &&
+	                (catsToBeUpdated = model.findCatsByName(contents.name))) {
+	                catsToBeUpdated.forEach(function (cat, index) {
+	                    cat.name = contents.name ? contents.name : cat.name;
+	                    cat.photoPath = contents.photo ? 'images/' + contents.photo : cat.photoPath;
+	                    cat.clicks = contents.count ? contents.count : cat.clicks;
+	                });
+
+	                catClickerView.render();
+
+	                return true;
+	            }
+	            else {
+	                return false;
+	            }
 	        }
 	    };
 
@@ -213,6 +235,18 @@
 
 	        getAllCats: function() {
 	            return this.cats;
+	        },
+
+	        findCatsByName: function(name) {
+	            var results = [];
+
+	            for (var i = 0; i < this.cats.length; i++) {
+	                if (this.cats[i].name === name) {
+	                    results.push(this.cats[i]);
+	                }
+	            }
+
+	            return results;
 	        }
 	    };
 
@@ -484,6 +518,69 @@
 		}
 
 		return jsSelector;
+	})();
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	module.exports = (function () {
+		var jsSelector,
+			catAdminUI = {
+				init: function(octopus) {
+					var that = this;
+
+					jsSelector = __webpack_require__(5);
+					this.octopus = octopus;
+					this.adminPanel = jsSelector(document.getElementsByClassName('cat-clicker-admin'));
+					this.functionalityBox = this.adminPanel.findByClassName('admin-functionality-box').first();
+					this.adminButton = this.adminPanel.findByClassName('btn admin-btn').first();
+					this.inputElements = this.adminPanel.findByTagName('form').findByTagName('input');
+					this.cancelButton = this.adminPanel.findByClassName('btn cancel-btn').first();
+					this.confirmButton = this.adminPanel.findByClassName('btn confirm-btn').first();
+
+					this.adminButton.addEventListener('click', function () {
+						that.toggleAdminPanel();
+					});
+
+					this.cancelButton.addEventListener('click', function () {
+						that.hideAdminPanel();
+					});
+
+					this.confirmButton.addEventListener('click', function () {
+						var updateContent = {};
+
+						that.inputElements.each(function (index, input) {
+							updateContent[input.name] = input.value;
+						});
+
+						octopus.updateCat(updateContent);
+					});
+				},
+
+				showAdminPanel: function() {
+					this.functionalityBox.style.visibility = 'visible';
+				},
+
+				hideAdminPanel: function() {
+					this.functionalityBox.style.visibility = 'hidden';
+				},
+
+				toggleAdminPanel: function() {
+					var visibility = this.functionalityBox.style.visibility;
+
+					if (!visibility || visibility === 'visible') {
+						this.hideAdminPanel();
+					}
+					else {
+						this.showAdminPanel();
+					}
+				}
+		}
+
+		return catAdminUI;
 	})();
 
 /***/ }
