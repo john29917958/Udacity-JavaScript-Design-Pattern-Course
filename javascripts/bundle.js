@@ -66,8 +66,8 @@
 	module.exports = (function () {
 	    var catListView = __webpack_require__(2),
 	        catClickerView = __webpack_require__(3),
-	        adminView = __webpack_require__(6),
-	        model = __webpack_require__(4);
+	        adminView = __webpack_require__(4),
+	        model = __webpack_require__(5);
 
 	    function addCat(name, photoPath) {
 	        model.cats.push({
@@ -189,7 +189,7 @@
 	'use strict';
 
 	module.exports = (function () {
-	    var jsSelector = __webpack_require__(5);
+	    var jsSelector = __webpack_require__(6);
 
 	    var catClicker = {
 	        init: function(octopus) {
@@ -227,6 +227,69 @@
 	'use strict';
 
 	module.exports = (function () {
+		var jsSelector,
+			catAdminUI = {
+				init: function(octopus) {
+					var that = this;
+
+					jsSelector = __webpack_require__(6);
+					this.octopus = octopus;
+					this.adminPanel = jsSelector(document.getElementsByClassName('cat-clicker-admin'));
+					this.functionalityBox = this.adminPanel.findByClassName('admin-functionality-box').first();
+					this.adminButton = this.adminPanel.findByClassName('btn admin-btn').first();
+					this.inputElements = this.adminPanel.findByTagName('form').findByTagName('input');
+					this.cancelButton = this.adminPanel.findByClassName('btn cancel-btn').first();
+					this.confirmButton = this.adminPanel.findByClassName('btn confirm-btn').first();
+
+					this.adminButton.addEventListener('click', function () {
+						that.toggleAdminPanel();
+					});
+
+					this.cancelButton.addEventListener('click', function () {
+						that.hideAdminPanel();
+					});
+
+					this.confirmButton.addEventListener('click', function () {
+						var updateContent = {};
+
+						that.inputElements.each(function (index, input) {
+							updateContent[input.name] = input.value;
+						});
+
+						octopus.updateCat(updateContent);
+					});
+				},
+
+				showAdminPanel: function() {
+					this.functionalityBox.style.visibility = 'visible';
+				},
+
+				hideAdminPanel: function() {
+					this.functionalityBox.style.visibility = 'hidden';
+				},
+
+				toggleAdminPanel: function() {
+					var visibility = this.functionalityBox.style.visibility;
+
+					if (!visibility || visibility === 'visible') {
+						this.hideAdminPanel();
+					}
+					else {
+						this.showAdminPanel();
+					}
+				}
+		}
+
+		return catAdminUI;
+	})();
+
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	module.exports = (function () {
 	    var catStorage = {
 	        init: function() {
 	            this.cats = [];
@@ -254,7 +317,7 @@
 	})();
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -518,69 +581,6 @@
 		}
 
 		return jsSelector;
-	})();
-
-/***/ },
-/* 6 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	module.exports = (function () {
-		var jsSelector,
-			catAdminUI = {
-				init: function(octopus) {
-					var that = this;
-
-					jsSelector = __webpack_require__(5);
-					this.octopus = octopus;
-					this.adminPanel = jsSelector(document.getElementsByClassName('cat-clicker-admin'));
-					this.functionalityBox = this.adminPanel.findByClassName('admin-functionality-box').first();
-					this.adminButton = this.adminPanel.findByClassName('btn admin-btn').first();
-					this.inputElements = this.adminPanel.findByTagName('form').findByTagName('input');
-					this.cancelButton = this.adminPanel.findByClassName('btn cancel-btn').first();
-					this.confirmButton = this.adminPanel.findByClassName('btn confirm-btn').first();
-
-					this.adminButton.addEventListener('click', function () {
-						that.toggleAdminPanel();
-					});
-
-					this.cancelButton.addEventListener('click', function () {
-						that.hideAdminPanel();
-					});
-
-					this.confirmButton.addEventListener('click', function () {
-						var updateContent = {};
-
-						that.inputElements.each(function (index, input) {
-							updateContent[input.name] = input.value;
-						});
-
-						octopus.updateCat(updateContent);
-					});
-				},
-
-				showAdminPanel: function() {
-					this.functionalityBox.style.visibility = 'visible';
-				},
-
-				hideAdminPanel: function() {
-					this.functionalityBox.style.visibility = 'hidden';
-				},
-
-				toggleAdminPanel: function() {
-					var visibility = this.functionalityBox.style.visibility;
-
-					if (!visibility || visibility === 'visible') {
-						this.hideAdminPanel();
-					}
-					else {
-						this.showAdminPanel();
-					}
-				}
-		}
-
-		return catAdminUI;
 	})();
 
 /***/ }
