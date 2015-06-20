@@ -1,17 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <title>Udacity Retain</title>
-    <link rel="stylesheet" href="stylesheets/retain.css">
+    <title>Cat Clicker Premium Pro</title>
+    <meta http-equiv="content-type" content="text/html">
+    <meta charset="utf-8">
+    <link type="text/css" rel="stylesheet" href="stylesheets/style.css">
   </head>
   <body>
-    <form id="new-note-form" class="new-note-form">
-        <input id="new-note-content" class="new-note-content">
-    </form>
-    <ul id="notes" class="notes"></ul>
+    <div id="page-wrapper">
+      <div id="page-header">
+        <h1>Cat Clicker</h1>
+        <hr>
+      </div>
+      <div id="page-content">
+        <ul class="cat-list">No cat</ul>
 
-    <script src="javascripts/vendor/jquery.min.js"></script>
-    <script src="javascripts/bundle.js"></script>
+        <div class="cat-clicker">
+          <h2 class="cat-clicker-name">I'm no name cat</h2>
+          <div class="cat-clicker-photo">
+            <img src="" alt="I don't have photo!">
+          </div>
+          <div class="cat-clicker-click-count">
+            Click count: <span class="cat-clicker-count">0</span>
+          </div>
+        </div>
+        <br>
+        <div class="cat-clicker-admin">
+          <button class="btn admin-btn">Admin</button>
+          <div class="admin-functionality-box">
+            <form action="" method="" accept-charset="utf-8">
+              <table class="table">
+                <caption>Edit cat</caption>
+                <tbody>
+                  <tr>
+                    <th>Name</th>
+                    <td>
+                      <input class="form-control" type="text" name="name" value="" placeholder="Input cat's name here......">
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Photo</th>
+                    <td>
+                      <input class="form-control" type="url" name="photo" value="" placeholder="Input the photo URL here......">
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Click count</th>
+                    <td>
+                      <input class="form-control" type="text" name="count" value="" placeholder="Input click count here......">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="text-right" colspan="2">
+                      <button class="btn cancel-btn" type="button">
+                        Cancel
+                      </button>
+                      <button class="btn confirm-btn" type="button">
+                        Okay
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </form>
+          </div>
+        </div>
+      <div class="text-center" id="page-footer">
+        <!--Page footer-->
+      </div>
+    </div>
+    <script type="text/javascript" src="javascripts/bundle.js" charset="utf-8"></script>
   </body>
 </html>
